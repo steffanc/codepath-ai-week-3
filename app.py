@@ -107,12 +107,17 @@ async def on_message(message: cl.Message):
     response_message = await generate_response(client, message_history, gen_kwargs)
     print(f"Response: {response_message.content}")
 
-    result = parse_and_invoke(response_message.content)
-    if result is not None:
-        print(f"Result: {result}")
-        message_history.append({"role": "system", "content": f"Result of a function call: {result}"})
-        response_message = await generate_response(client, message_history, gen_kwargs)
-        print(f"Response: {response_message.content}")
+    content = response_message.content
+    while True:
+        result = parse_and_invoke(content)
+        if result is not None:
+            print(f"Result: {result}")
+            message_history.append({"role": "system", "content": f"Result of a function call: {result}"})
+            response_message = await generate_response(client, message_history, gen_kwargs)
+            content = response_message.content
+            print(f"Response: {response_message.content}")
+        else:
+            break
 
     message_history.append({"role": "assistant", "content": response_message.content})
     cl.user_session.set("message_history", message_history)
