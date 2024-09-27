@@ -40,7 +40,9 @@ Here are the functions you can call:
 
 get_now_playing_movies(): When the user asks for a list of currently playing movies.
 get_showtimes(title, location): When the user asks for showtimes of a specific movie.
-buy_ticket(theater, movie, showtime): When the user requests to buy a ticket.
+buy_ticket(theater, movie, showtime): When the user requests to buy a ticket and before they confirm the ticket 
+purchase. This must be called before confirm_ticket_purchase
+confirm_ticket_purchase(theater, movie, showtime): When the user confirms that they do indeed want to buy a ticket.
 get_reviews(movie_id): When the user asks for reviews of a specific movie.
 
 After receiving the results of the function call, use the updated system message history to incorporate that 
